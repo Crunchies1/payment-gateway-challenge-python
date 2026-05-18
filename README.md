@@ -1,3 +1,30 @@
+# My notes
+
+I've separated out my backend service into a few different layers:
+- Handlers (responsible for the HTTP request/response layer)
+- Services (responsible for business logic)
+- Clients (responsible for interacting with third party APIs)
+- Models (responsible for interacting with the DB)
+
+I didn't implement an actual DB since the root README.md said we didn't need to, but I would have just spun up a docker
+container with some mySQL instance if I did. Would then use a DB library to help connect to it. Would then implement
+some form of BEGIN TRANSACTION functionality so we keep certain call sequences atomic. Also need isolation somehow as
+I think it's possible that a race condition could occur in the code as it is currently.
+
+I created some unit tests to try and cover most of the cases. The most detail went to the payment service as it was the focus point
+of the exercise. Made sure to mock almost all other interactions in the unit tests. The integration test involves the full
+backend except for third parties, I would involve a test DB instance if we had one, instead of this in-memory list.
+
+I've added dotenv to the project requirements since I would usually put the URLs to these third party API's in an env file, as
+if they are updated they usually increment their version suffix like v2 -> v3 and we can just update that in the env file.
+
+Logging/errors is pretty barebones and if it was a real production system, there'd probably be some sort of bubbling up of the logs and have
+something capture them to log them on something like GCP. We'd also probably do more proper separation, I've left some consts in the files
+which may not be best practice.
+
+There is a card service, it's something extra and I've tried to go over my rationale for it in this whiteboarding
+file: https://excalidraw.com/#json=NU2IHTRDH3TsKTFfYOcuH,VwX4OGyfvPUZn1n2VnNo0A
+
 # Instructions for candidates
 
 This is the Python version of the Payment Gateway challenge. If you haven't already read the [README.md](https://github.com/cko-recruitment) in the root of this organisation, please do so now. 

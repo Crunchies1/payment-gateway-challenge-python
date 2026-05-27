@@ -25,6 +25,69 @@ which may not be best practice.
 There is a card service, it's something extra and I've tried to go over my rationale for it in this whiteboarding
 file: https://excalidraw.com/#json=NU2IHTRDH3TsKTFfYOcuH,VwX4OGyfvPUZn1n2VnNo0A
 
+# How to run the app
+
+## Locally
+
+Make sure the following are installed:
+- Python 3.12.10
+- Poetry
+
+The following command can be used to install Poetry on most operating systems (Linux, macOS, Windows (WSL))
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+There is a Makefile provided which just runs Poetry under the hood.
+```
+make install
+```
+
+Run the app.
+```
+make run
+```
+
+Run the bank simulator.
+```
+docker-compose up
+```
+
+## Via Docker
+
+Make sure you have Docker installed.
+
+Run the app, force a build to get latest changes.
+```
+docker compose --profile app up --build
+```
+
+# Installing new dependencies
+
+In order to install new dependencies and run them via Poetry, make sure you follow this process:
+
+Add a new dependency.
+```
+poetry add <package>
+```
+
+Install the dependencies.
+```
+poetry install
+```
+
+Move the poetry dependencies into a requirements.txt file. This is
+so we can build the Docker image correctly.
+```
+poetry run pip freeze | grep -v "^-e" > requirements.txt
+```
+
+# Running tests
+
+Unit tests: `make test-unit`
+Integration tests: `make test-integration`
+All tests: `make test`
+
 # Instructions for candidates
 
 This is the Python version of the Payment Gateway challenge. If you haven't already read the [README.md](https://github.com/cko-recruitment) in the root of this organisation, please do so now. 

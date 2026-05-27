@@ -38,7 +38,7 @@ class BankProcessPaymentResponse(BaseModel):
     authorization_code: str
 
 async def process_payment(req: BankProcessPaymentRequest) -> BankProcessPaymentResponse:
-    resp = requests.post(BANK_URL, json=req.dict())
+    resp = requests.post(BANK_URL, json=req.model_dump())
     data_json = resp.json()
     payment_resp = BankProcessPaymentResponse(**data_json)
     return payment_resp

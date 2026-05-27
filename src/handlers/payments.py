@@ -14,7 +14,7 @@ async def process_payment(req: payment_service.ProcessPaymentRequest) -> payment
     except:
         raise HTTPException(status_code=500, detail="Service error")
 
-@router.post("/{payment_id}", response_model=payment_service.GetPaymentDetailsResponse)
+@router.get("/{payment_id}", response_model=payment_service.GetPaymentDetailsResponse)
 def get_payment_details(payment_id: str) -> payment_service.GetPaymentDetailsResponse:
     payment = payment_service.get_payment_details(payment_id)
     if not payment:

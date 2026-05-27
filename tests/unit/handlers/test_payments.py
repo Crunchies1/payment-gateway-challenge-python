@@ -60,7 +60,7 @@ class TestProcessPayment:
         response = client.post("/payments", json=VALID_REQUEST)
 
         assert response.status_code == 200
-        assert response.json() == AUTHORIZED_RESPONSE
+        assert response.json() == AUTHORIZED_RESPONSE.model_dump()
 
     @patch("src.handlers.payments.payment_service.process_payment", new_callable=AsyncMock)
     def test_process_payment_returns_declined_response(self, mock_process):
@@ -69,7 +69,7 @@ class TestProcessPayment:
         response = client.post("/payments", json=VALID_REQUEST)
 
         assert response.status_code == 200
-        assert response.json() == DECLINED_RESPONSE
+        assert response.json() == DECLINED_RESPONSE.model_dump()
 
     @patch("src.handlers.payments.payment_service.process_payment", new_callable=AsyncMock)
     def test_process_payment_returns_400_on_validation_error(self, mock_process):
@@ -92,15 +92,15 @@ class TestGetPaymentDetails:
     def test_get_payment_details_success_found(self, mock_get):
         mock_get.return_value = PAYMENT_DETAILS_RESPONSE
 
-        response = client.post("/payments/test-uuid")
+        response = client.get("/payments/test-uuid")
 
         assert response.status_code == 200
-        assert response.json() == PAYMENT_DETAILS_RESPONSE
+        assert response.json() == PAYMENT_DETAILS_RESPONSE.model_dump()
 
     @patch("src.handlers.payments.payment_service.get_payment_details")
     def test_get_payment_details_returns_404_not_found(self, mock_get):
         mock_get.return_value = None
 
-        response = client.post("/payments/nonexistent-id")
+        response = client.get("/payments/nonexistent-id")
 
         assert response.status_code == 404
